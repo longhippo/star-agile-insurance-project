@@ -1,18 +1,18 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: health-care-ingress
+  name: star-agile-insurance-project-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: healthcare.local
+  - host: star-agile-insurance-project.local
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: health-care-service
+            name: star-agile-insurance-project-service
             port:
               number: 80
