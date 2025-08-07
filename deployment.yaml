@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: health-care-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: health-care
+  template:
+    metadata:
+      labels:
+        app: health-care
+    spec:
+      containers:
+      - name: health-care-container
+        image: subkamble/star-agile-health-care:latest
+        ports:
+        - containerPort: 8081
