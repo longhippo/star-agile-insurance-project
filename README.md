@@ -15,7 +15,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Docker Hub username/password
         DOCKERHUB_USERNAME = "${DOCKERHUB_USR}"
         DOCKERHUB_PASSWORD = "${DOCKERHUB_PSW}"
-        IMAGE_NAME = 'subkamble/star-agile-insurance-project'
+        IMAGE_NAME = 'subkamble/star-agile-health-care'
     }
 
     stages {
@@ -57,14 +57,31 @@ pipeline {
                         docker pull ${IMAGE_NAME}:latest
 
                         # Stop and remove any existing container with the same name
-                        docker rm -f health-care-app || true
-
+                        docker rm -f ${IMAGE_NAME} || true
+                            
                         # Run the container on port 3000
-                        docker run -d --name health-care-app -p 3000:8081 ${IMAGE_NAME}:latest
+                        docker run -d --name ${IMAGE_NAME} -p 3000:8081 ${IMAGE_NAME}:latest
                     """
                 }
             }
         }
+        stage('Deploy to Kubernetes') {
+    steps {
+        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+            sh '''
+                echo "Using kubeconfig: $KUBECONFIG"
+                kubectl apply -f deployment.yaml
+                kubectl apply -f service.yaml
+
+                echo "app is running on port <ip>:30080"
+                
+                
+            '''
+        }
+    }
+}
+
+
         
     }
 
