@@ -3,7 +3,7 @@
 
 sudo usermod -aG docker jenkins
 sudo systemctl restart jenkins
-
+star-agile-insurance-project
 ```
 
 
@@ -16,7 +16,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Docker Hub username/password
         DOCKERHUB_USERNAME = "${DOCKERHUB_USR}"
         DOCKERHUB_PASSWORD = "${DOCKERHUB_PSW}"
-        IMAGE_NAME = 'subkamble/star-agile-health-care'
+        IMAGE_NAME = 'subkamble/star-agile-insurance-project'
     }
 
     stages {
