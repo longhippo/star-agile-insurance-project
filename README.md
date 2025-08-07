@@ -3,7 +3,6 @@
 
 sudo usermod -aG docker jenkins
 sudo systemctl restart jenkins
-star-agile-insurance-project
 ```
 
 
@@ -80,3 +79,38 @@ pipeline {
 }
 
 ````
+
+
+Use Kubeconfig in Jenkins (for local clusters or remote K8s access)
+On a machine where kubectl works, run:
+
+``` bash
+cat ~/.kube/config
+```
+Copy the contents and store them in Jenkins as a Secret file:
+
+Go to: Jenkins → Manage Jenkins → Credentials
+
+ID: kubeconfig
+
+Update your Jenkinsfile to use it:
+
+``` groovy
+stage('Deploy to Kubernetes') {
+    steps {
+        withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')]) {
+            sh '''
+                echo "Using kubeconfig: $KUBECONFIG"
+                kubectl apply -f k8s/deployment.yaml
+                kubectl apply -f k8s/service.yaml
+            '''
+        }
+    }
+}
+```
+
+
+
+
+
+
