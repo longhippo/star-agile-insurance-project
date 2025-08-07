@@ -15,7 +15,7 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-creds') // Docker Hub username/password
         DOCKERHUB_USERNAME = "${DOCKERHUB_USR}"
         DOCKERHUB_PASSWORD = "${DOCKERHUB_PSW}"
-        IMAGE_NAME = 'subkamble/star-agile-health-care'
+        IMAGE_NAME = 'subkamble/star-agile-insurance-project'
     }
 
     stages {
@@ -35,6 +35,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
+                    
                     dockerImage = docker.build("${IMAGE_NAME}:${BUILD_NUMBER}")
                 }
             }
@@ -54,13 +55,15 @@ pipeline {
             steps {
                 script {
                     sh """
+                        
                         docker pull ${IMAGE_NAME}:latest
 
                         # Stop and remove any existing container with the same name
                         docker rm -f ${IMAGE_NAME} || true
-                            
+                        docker rm -f star-agile-insurance-project
                         # Run the container on port 3000
-                        docker run -d --name ${IMAGE_NAME} -p 3000:8081 ${IMAGE_NAME}:latest
+                        docker run -d --name star-agile-insurance-project -p 3000:8081 subkamble/star-agile-insurance-project:latest
+
                     """
                 }
             }
@@ -94,7 +97,6 @@ pipeline {
         }
     }
 }
-
 ````
 
 
